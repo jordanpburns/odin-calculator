@@ -1,12 +1,57 @@
 .container {
     display: flex;
-    padding: 8px;
-    border-style: solid;
-    border-color: black;
-    border-radius: 2px;
-    border-width: 2px;
 }
 
-.button-container, #outermost-container, #operators-container {
+.button-container, #outermost-container, #operators-container, #left-container {
     flex-direction: column;
+}
+
+#outermost-container {
+    border-width: 6px;
+    border-color: #383838;
+    border-style: solid;
+    width: 400px;
+    border-radius: 5px;
+    background-color: #383838;
+}
+
+button {
+    width: 100px;
+    height: 100px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 2px;
+    font-size: 48px;
+}
+
+#display {
+    height: 100px;
+    width: 400px;
+    font-size: 80px;
+    text-align: right;
+    /* background-color: lightslategray; */
+    background-color: gainsboro;
+    border-color: black;
+    border-style: solid;
+    border-width: 4px;
+    padding: 4px;
+}
+
+#top-row-container button{
+    background-color: darkgray;
+}
+
+#numbers-container {
+    background-color: lightgray;
+}
+
+#operators-container button {
+    background-color: seagreen;
+    filter: brightness(100%);
+    color: white;
+
+}
+
+#zeroButton {
+    width: 200px;
 }

@@ -31,6 +31,19 @@ function operate(firstNumber, secondNumber, operator) {
     }
 }
 
+const topRowContainer = document.querySelector("#top-row-container");
+const topRowSymbols = ["AC", "+/-", "%"];
+
+topRowSymbols.forEach((value) => {
+    let button = document.createElement("button");
+    button.textContent = `${value}`;
+    topRowContainer.appendChild(button);
+})
+
+topRowContainer.addEventListener("click", (event) => {
+    topRowPress(event);
+})
+
 const numbersContainer = document.querySelector("#numbers-container");
 
 for (i=0; i<3; i=i+1) {
@@ -43,25 +56,31 @@ for (i=0; i<3; i=i+1) {
     numbersContainer.appendChild(row);
 }
 
-row = document.createElement("div");
-const lastRowSymbols = ["0"];
+lastRow = document.createElement("div");
 
-lastRowSymbols.forEach((value) => {
-    let button = document.createElement("button");
-    button.textContent = `${value}`;
-    row.appendChild(button);
-})
-numbersContainer.appendChild(row);
+let zeroButton = document.createElement("button");
+zeroButton.textContent = "0";
+zeroButton.id = "zeroButton";
+lastRow.appendChild(zeroButton);
+
+let decimalButton = document.createElement("button");
+decimalButton.textContent = ".";
+decimalButton.id = "decimalButton";
+lastRow.appendChild(decimalButton);
+
+numbersContainer.appendChild(lastRow);
 numbersContainer.addEventListener("click", (event) => {
     numberPress(event);
 });
 
 const operatorsContainer = document.querySelector("#operators-container");
 const operatorSymbols = ["+", "-", "*", "/", "="];
+const operatorColors = ["#63c28d", "#59be86", "#50bb7f", "#46b778", "#3cb371"];
 
-operatorSymbols.forEach((value) => {
+operatorSymbols.forEach((value, index) => {
    let button = document.createElement("button");
    button.textContent = `${value}`;
+   button.style.cssText = `background-color: ${operatorColors[index]}`
    operatorsContainer.appendChild(button);
 })
 
@@ -84,6 +103,11 @@ function numberPress(event) {
         displayText = "";
         reset = true;
     }
+    if (target.textContent === ".") {
+        if (display.textContent.includes(".")) {
+            return;
+        }
+    }
     displayText += target.textContent;
     display.textContent = displayText;
 }
@@ -100,7 +124,7 @@ function operatorPress(event) {
             return;
         }
         let secondNumber = parseFloat(display.textContent);
-        let result = operate(firstNumber, secondNumber, operator);
+        let result = +operate(firstNumber, secondNumber, operator).toFixed(6);
         display.textContent = result;
         secondNumber = undefined;
         operator = undefined;
@@ -109,5 +133,23 @@ function operatorPress(event) {
         firstNumber = parseFloat(display.textContent);
         operator = target.textContent;
         reset = false;
+    }
+}
+
+function topRowPress(event) {
+    let target = event.target;
+    switch(target.textContent) {
+        case "AC":
+            display.textContent = "0";
+            firstNumber = undefined;
+            operator = undefined;
+            secondNumber = undefined;
+            break;
+        case "+/-":
+            display.textContent = parseFloat(display.textContent) * -1;
+            break;
+        case "%":
+            display.textContent = +(parseFloat(display.textContent) / 100).toFixed(6);
+            break;
     }
 }
